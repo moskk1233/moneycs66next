@@ -4,6 +4,7 @@ import PaymentCard from "@/components/PaymentCard"
 import Image from "next/image"
 import { Link as ScrollLink } from "react-scroll"
 import { ChangeEvent, useState } from "react"
+import { logout } from "@/lib/logout.action"
 
 function SlipImage({ url }: { url: string }) {
   return (
@@ -46,7 +47,7 @@ export default function ProfilePage() {
   
   return (
     <main className="grid gap-10">
-      <div className="flex justify-center">
+      <div className="grid gap-5 justify-center">
         <ScrollLink 
           to="slipInput" 
           className="scroll-smooth"
@@ -57,6 +58,7 @@ export default function ProfilePage() {
               ส่งสลิปโอนเงิน
           </button>
         </ScrollLink>
+        <button className="btn btn-error" onClick={async() => await logout()}>ออกจากระบบ</button>
       </div>
 
       <div className="min-w-96 shadow-md mx-auto p-5">
