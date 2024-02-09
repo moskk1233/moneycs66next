@@ -2,10 +2,33 @@
 
 import PaymentCard from "@/components/PaymentCard"
 import Image from "next/image"
-import { useState } from "react"
+import { Link as ScrollLink } from "react-scroll"
+import { ChangeEvent, useState } from "react"
+
+function SlipImage({ url }: { url: string }) {
+  return (
+    <Image src={url} alt="" width={250} height={1}/>
+  )
+}
 
 export default function ProfilePage() {
+  
   const [isCopy, setIsCopy] = useState(false)
+  const [slipImage, setSlipImage] = useState("")
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0]
+
+    if (file) {
+      const blob = new Blob([file], { type: file.type })
+      const url = URL.createObjectURL(blob)
+  
+      setSlipImage(url)
+    } else {
+      setSlipImage("")
+    }
+
+  }
   
   const copyToClip = () => {
     setIsCopy(true)
@@ -24,7 +47,16 @@ export default function ProfilePage() {
   return (
     <main className="grid gap-10">
       <div className="flex justify-center">
-        <button className="btn btn-primary">ส่งสลิปโอนเงิน</button>
+        <ScrollLink 
+          to="slipInput" 
+          className="scroll-smooth"
+          smooth={true}
+          duration={500}
+        >
+          <button className="btn btn-primary">
+              ส่งสลิปโอนเงิน
+          </button>
+        </ScrollLink>
       </div>
 
       <div className="min-w-96 shadow-md mx-auto p-5">
@@ -72,16 +104,23 @@ export default function ProfilePage() {
           <p className="text-center text-2xl">แบบฟอร์มชำระเงิน</p>
         </div>
         <div>
-          <Image src="/scb.jpg" alt="" width={400} height={1}/>
+          <Image src="/scb.jpg" alt="" width={400} height={1} />
         </div>
-        <div className="grid justify-center gap-2 mb-10">
-          <p>5104594090 ธนาคารไทยพาณิชย์</p>
-          <button className={`btn ${isCopy ? "btn-active" : "btn-primary"}`} onClick={copyToClip}>
+        <div className="grid gap-5 justify-center my-5">
+          <button className={`btn ${isCopy ? "btn-active" : "btn-primary"} w-full`} onClick={copyToClip}>
             { isCopy
             ? "ก็อปสำเร็จ!"
             : "ก็อปปี้เลขบัญชี"
             }
           </button>
+          <input type="file" className="file-input file-input-bordered w-full max-w-xs" id="slipInput" accept="image/png, image/jpeg" onChange={handleInputChange}/>
+
+          <div className="flex justify-center">
+            { slipImage
+              ? <SlipImage url={slipImage}/>
+              : null
+            }
+          </div>
         </div>
       </div>
     </main>
