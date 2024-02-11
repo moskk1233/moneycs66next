@@ -123,6 +123,10 @@ export default function ProfilePage() {
               : null
             }
           </div>
+
+          <div className="justify-self-center">
+            <button className="btn btn-success">ยืนยันการโอน</button>
+          </div>
         </div>
       </div>
     </main>
